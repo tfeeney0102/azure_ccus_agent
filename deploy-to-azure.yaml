@@ -1,0 +1,38 @@
+location: East US 2
+resourceGroup: ccus-agent-rg
+containerAppName: ccus-agent-app
+containerRegistryName: ccusagentregistry
+containerAppEnvironment: ccus-agent-env
+
+# Container configuration
+image:
+  name: ccus-agent
+  tag: latest
+
+# Scaling configuration  
+scale:
+  minReplicas: 0
+  maxReplicas: 10
+  rules:
+    - name: http-rule
+      http:
+        metadata:
+          concurrentRequests: "10"
+
+# Resource allocation
+resources:
+  cpu: 0.5
+  memory: 1.0Gi
+
+# Ingress configuration
+ingress:
+  external: true
+  targetPort: 8501
+  allowInsecure: false
+
+# Environment variables (if needed)
+env:
+  - name: STREAMLIT_SERVER_PORT
+    value: "8501"
+  - name: STREAMLIT_SERVER_ADDRESS
+    value: "0.0.0.0" 
